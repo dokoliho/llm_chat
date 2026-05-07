@@ -61,8 +61,8 @@ Once in the chat, use the following commands (prefixed with `:`):
 
 ### Keyboard Shortcuts
 
-- **Alt+Enter**: Insert a line break
 - **Enter**: Send message
+- **Option+Enter**: Insert a line break
 - **Ctrl+C**: Exit the chat
 
 ## Configuration: opencode.json

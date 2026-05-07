@@ -5,6 +5,7 @@ from pathlib import Path
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.key_binding import KeyBindings
 from rich.console import Console
 
 from chatcode.client import make_client, stream_chat
@@ -33,9 +34,20 @@ def run_chat(
     )
     client = make_client(providers[provider_id])
 
+    kb = KeyBindings()
+
+    @kb.add("enter")
+    def _submit(event):
+        event.current_buffer.validate_and_handle()
+
+    @kb.add("escape", "enter")
+    def _newline(event):
+        event.current_buffer.insert_text("\n")
+
     prompt_session: PromptSession = PromptSession(
         history=FileHistory(str(HISTORY_FILE)),
         multiline=True,
+        key_bindings=kb,
     )
 
     def _save(filename: str | None) -> None:
@@ -127,5 +139,5 @@ def _print_header(display_name: str, provider_id: str) -> None:
     console.print(
         f"[bold green]chatcode[/bold green] — "
         f"[cyan]{display_name}[/cyan] [dim]({provider_id})[/dim]\n"
-        f"[dim]Tippe :help für Befehle. Enter für Zeilenumbruch, Alt+Enter zum Senden. Ctrl-C oder :exit zum Beenden.[/dim]\n"
+        f"[dim]Tippe :help für Befehle. Enter zum Senden, Option+Enter für Zeilenumbruch. Ctrl-C oder :exit zum Beenden.[/dim]\n"
     )
