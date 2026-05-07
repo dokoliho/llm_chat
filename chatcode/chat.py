@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -12,7 +11,7 @@ from chatcode.client import make_client, stream_chat
 from chatcode.commands import CommandContext, dispatch
 from chatcode.models import ChatMessage, ProviderConfig, Session
 from chatcode.picker import pick_model_interactive
-from chatcode.session import SESSIONS_DIR, load_session, make_session_id, save_session
+from chatcode.session import load_session, make_session_id, save_session
 from chatcode.state import save_last_used
 
 HISTORY_FILE = Path.home() / ".config" / "chatcode" / "history"
