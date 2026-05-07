@@ -31,6 +31,8 @@ def stream_chat(
             stream=True,
         )
         for chunk in stream:
+            if not chunk.choices:
+                continue
             token = chunk.choices[0].delta.content or ""
             if token:
                 on_token(token)

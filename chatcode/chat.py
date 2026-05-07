@@ -47,6 +47,7 @@ def run_chat(
             loaded = load_session(filename)
             session.messages[:] = loaded.messages
             session.system_prompt = loaded.system_prompt
+            ctx.system_prompt = loaded.system_prompt
             nonlocal client
             if loaded.provider_id in providers:
                 session.provider_id = loaded.provider_id
@@ -54,6 +55,7 @@ def run_chat(
                 client = make_client(providers[loaded.provider_id])
                 ctx.current_provider_id = loaded.provider_id
                 ctx.current_model_id = loaded.model_id
+                save_last_used(loaded.provider_id, loaded.model_id)
             console.print(f"[green]Session geladen:[/green] {len(session.messages)} Nachrichten")
         except FileNotFoundError as exc:
             console.print(f"[red]{exc}[/red]")
@@ -125,5 +127,5 @@ def _print_header(display_name: str, provider_id: str) -> None:
     console.print(
         f"[bold green]chatcode[/bold green] — "
         f"[cyan]{display_name}[/cyan] [dim]({provider_id})[/dim]\n"
-        f"[dim]Tippe :help für Befehle. Alt+Enter für Zeilenumbruch, Enter zum Senden. Ctrl-C oder :exit zum Beenden.[/dim]\n"
+        f"[dim]Tippe :help für Befehle. Enter für Zeilenumbruch, Alt+Enter zum Senden. Ctrl-C oder :exit zum Beenden.[/dim]\n"
     )
